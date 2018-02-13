@@ -1,4 +1,7 @@
 require 'pry'
+require 'i18n'
+
+I18n.enforce_available_locales = false
 #
 # Takes a unicode line or lines and parses the relevant portions from it.
 #
@@ -39,6 +42,7 @@ class Parser
   end
 
   protected
+
     def parse_line(line)
       contents = line.split('|')
       name, date, type, ref = contents
@@ -76,7 +80,7 @@ class PersonalParser < Parser
 
   protected
     def parse_items(name, date, *unused)
-      NameItem.new(match_name = name, date = date, name = name, owner = name)
+      NameItem.new(match_name = I18n.transliterate(name), date = date, name = name, owner = name)
     end
 end
 

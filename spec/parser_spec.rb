@@ -80,14 +80,13 @@ describe 'Parser' do
     end
 
     it "Normalizes special characters" do
-      pending "Normalization"
       name = "Eoin Ó Briain"
       result = parse_line(simple_line(name, "N"))
       expect(result).to eq(
         NameItem.new(match_name = 'Eoin O Briain',
+          date = date_source,
           name = name,
-          owner = name,
-          date = date_source))
+          owner = name))
     end
 
 
