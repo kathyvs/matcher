@@ -3,7 +3,7 @@ require 'rspec'
 require 'name_matcher'
 require 'parser'
 
-describe "PersonalExtractor"do
+describe "PersonalExtractor" do
 
   let (:extractor) {
     PersonalExtractor.new
@@ -13,19 +13,15 @@ describe "PersonalExtractor"do
     "DATE_SOURCE"
   }
 
-  def parse_item(name, type, text)
-    return Parser::ParseItem(name, date_source, type, text)
+  context "for entries of type 'Primary Personal Name' (N)" do
 
-
-  context "For rows of type Name (N)"
-
-    def simple_parse_item(name)
-      return parse_item(name, "N", "")
+    def extract_item(name)
+      extractor.extract_item(Parser::ParsedItem.new(name, date_source, "N"))
     end
 
     it "Pulls out the first element in the normal case" do
       name = "John the Smith"
-      result = extractor.extract_item(name, date_source, "N")
+      result = extract_item(name)
       expect(result).to eq(
         NameItem.new(match_name = name,
           date = date_source,
@@ -33,9 +29,9 @@ describe "PersonalExtractor"do
           owner = name))
     end
 
-    it "Normalizes special characters for the matcher" do
+    it "normalizes special characters for the primary name" do
       name = "Eoin Ó Briain"
-      result = extractor.extract_item(name, date_source, "N")
+      result = extract_item(name)
       expect(result).to eq(
         NameItem.new(match_name = 'Eoin O Briain',
           date = date_source,

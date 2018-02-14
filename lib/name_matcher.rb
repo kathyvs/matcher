@@ -4,8 +4,10 @@
 #
 class PersonalExtractor
 
-  def extract_item(name, date, *unused)
-    NameItem.new(match_name = I18n.transliterate(name), date = date_source, name = name, owner = name)
+  def extract_item(item)
+    name = item.name
+    NameItem.new(match_name = I18n.transliterate(name), date = item.date_source,
+      name = name, owner = name)
   end
 end
 
@@ -13,4 +15,4 @@ end
 #
 # Structure for the extracted result
 #
-NameItem = Struct.new(:match_name, :date, :name, :owner)
+NameItem = Struct.new(:match_name, :date_source, :name, :owner)
