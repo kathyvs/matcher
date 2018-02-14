@@ -18,7 +18,7 @@ describe 'Parser' do
   }
 
   let (:parser) {
-    Parser.new(SimpleExtractor.new)
+    Parser.new
   }
 
   it "ignores range dates" do
@@ -28,12 +28,8 @@ describe 'Parser' do
 
   context "when parsing dates" do
 
-    let (:parser) {
-      Parser.new(SimpleExtractor.new)
-    }
-
     def parse_date(date_str)
-      parse_line("Test Name|#{date_str}|N||(regid:4000)")[1]
+      parse_line("Test Name|#{date_str}|N||(regid:4000)").date_source
     end
 
     it "there are at least 18 kingdoms" do
@@ -56,15 +52,4 @@ describe 'Parser' do
 
   end
 
-end
-
-
-#
-# Used to test things outside of whether it is a personal or non personal name
-#
-class SimpleExtractor
-
-  def extract_item(parse_item)
-    return ["#{parse_item.name}:#{parse_item.type}:#{parse_item.text}", parse_item.date_source]
-  end
 end

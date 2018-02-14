@@ -31,20 +31,16 @@ class Parser
     'W' => 'West'
   }
 
-  attr_reader :extractor
-
-  def initialize(extractor)
-    @extractor = extractor
-  end
-
   def date_parser
     @date_parser ||= DateParser.new
   end
 
   def parse(lines)
+    return enum_for(:parse, lines) unless block_given?
     lines.map do |line|
-      parse_line(line)
-    end.collect!
+      item = parse_line(line)
+      yield item if item
+    end
   end
 
   protected
@@ -53,7 +49,7 @@ class Parser
       contents = line.split('|')
       name, date_code, type, ref = contents
       date = date_parser.parse(date_code)
-      extractor.extract_item(ParsedItem.new(name, date, type, ref)) if date
+      ParsedItem.new(name, date, type, ref) if date
     end
 
   #
@@ -88,20 +84,5 @@ class Parser
   DateSource = Struct.new(:date, :kingdom)
 
 end
-
-#
-# Parser for pull out personal names from the armorial
-#
-class PersonalExtractor
-
-  def extract_item(name, date, *unused)
-    NameItem.new(match_name = I18n.transliterate(name), date = date_source, name = name, owner = name)
-  end
-end
-
-#
-# Structure for the parsed result
-#
-NameItem = Struct.new(:match_name, :date, :name, :owner)
 
 
