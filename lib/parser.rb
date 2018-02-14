@@ -31,6 +31,12 @@ class Parser
     'W' => 'West'
   }
 
+  attr_reader :extractor
+
+  def initialize(extractor)
+    @extractor = extractor
+  end
+
   def date_parser
     @date_parser ||= DateParser.new
   end
@@ -45,9 +51,9 @@ class Parser
 
     def parse_line(line)
       contents = line.split('|')
-      name, date, type, ref = contents
-      date = date_parser.parse(date)
-      parse_items(name, date, type, ref) if date
+      name, date_code, type, ref = contents
+      date = date_parser.parse(date_code)
+      extractor.extract_item(ParsedItem.new(name, date, type, ref)) if date
     end
 
   #
@@ -71,17 +77,26 @@ class Parser
     end
   end
 
+  #
+  # Parsed structure
+  #
+  ParsedItem = Struct.new(:name, :date_source, :type, :text)
+
+  #
+  # Date the submission was registered along with the kingdom.
+  #
+  DateSource = Struct.new(:date, :kingdom)
+
 end
 
 #
 # Parser for pull out personal names from the armorial
 #
-class PersonalParser < Parser
+class PersonalExtractor
 
-  protected
-    def parse_items(name, date, *unused)
-      NameItem.new(match_name = I18n.transliterate(name), date = date, name = name, owner = name)
-    end
+  def extract_item(name, date, *unused)
+    NameItem.new(match_name = I18n.transliterate(name), date = date_source, name = name, owner = name)
+  end
 end
 
 #
@@ -89,8 +104,4 @@ end
 #
 NameItem = Struct.new(:match_name, :date, :name, :owner)
 
-#
-# Date the submission was registered
-#
-DateSource = Struct.new(:date, :kingdom)
 
