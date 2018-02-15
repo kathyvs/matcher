@@ -3,6 +3,7 @@
 # Parser for pull out personal names from the armorial
 #
 class PersonalExtractor
+  I18n.enforce_available_locales = false
 
   def extract_item(item)
     name = item.name
@@ -16,3 +17,4 @@ end
 # Structure for the extracted result
 #
 NameItem = Struct.new(:match_name, :date_source, :name, :owner)
+

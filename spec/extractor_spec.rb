@@ -3,6 +3,7 @@ require 'rspec'
 require 'name_matcher'
 require 'parser'
 
+
 describe "PersonalExtractor" do
 
   let (:extractor) {
@@ -40,6 +41,7 @@ describe "PersonalExtractor" do
     end
 
   end
+
 end
 
 describe "NonPersonalExtractor" do
