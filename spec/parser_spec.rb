@@ -21,9 +21,12 @@ describe 'Parser' do
     Parser.new
   }
 
+  it "ignores illegal dates" do
+    expect(parser.parse(["Test Name|xxxxx|N||"]).to_a).to be_empty
+  end
+
   it "ignores range dates" do
-    pending "date parsing"
-    expect(parser.parse(["Test Name|201301K-201703K|N||(regid:300000"])).to be_empty
+    expect(parser.parse(["Test Name|201301K-201703K|N||(regid:300000"]).to_a).to be_empty
   end
 
   context "when parsing dates" do
