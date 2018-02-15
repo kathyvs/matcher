@@ -1,7 +1,8 @@
 require 'pry'
 require 'i18n'
 
-I18n.enforce_available_locales = false
+module NameMatcher
+
 #
 # Takes a unicode line or lines and parses the relevant portions from it.
 #
@@ -84,5 +85,5 @@ class Parser
   DateSource = Struct.new(:date, :kingdom)
 
 end
-
+end
 
