@@ -10,7 +10,7 @@ describe 'Parser' do
 
   let (:date_source) {
     # Must match date-code
-    DateSource.new(date = Date.new(2018, 1), kingdom = "An Tir")
+    NameMatcher::DateSource.new(date = Date.new(2018, 1), kingdom = "An Tir")
   }
 
   let (:date_string) {
@@ -18,7 +18,7 @@ describe 'Parser' do
   }
 
   let (:parser) {
-    Parser.new
+    NameMatcher::Parser.new
   }
 
   it "ignores illegal dates" do
@@ -36,7 +36,7 @@ describe 'Parser' do
     end
 
     it "there are at least 18 kingdoms" do
-      expect(Parser::KINGDOM_CODES.length).to be >= 18
+      expect(NameMatcher::Parser::KINGDOM_CODES.length).to be >= 18
     end
 
     it "takes the first four digits as the year" do
@@ -47,7 +47,7 @@ describe 'Parser' do
       expect(parse_date("201606N").date.month).to eq(06)
     end
 
-    Parser::KINGDOM_CODES.each do |code, kingdom|
+    NameMatcher::Parser::KINGDOM_CODES.each do |code, kingdom|
       it "translates the last letter #{code} to #{kingdom}" do
         expect(parse_date("201503#{code}").kingdom).to eq(kingdom)
       end
