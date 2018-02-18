@@ -1,5 +1,3 @@
-require 'pry'
-
 module NameMatcher
 
   class Runner
@@ -36,7 +34,6 @@ module NameMatcher
       end
 
       def match(item)
-        binding.pry
         match_pattern =~ item.match_name
       end
 

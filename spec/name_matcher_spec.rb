@@ -1,6 +1,5 @@
 require 'rspec'
 require 'name_matcher'
-require 'pry'
 describe NameMatcher do
 
   let(:reader) {

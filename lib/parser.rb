@@ -1,4 +1,3 @@
-require 'pry'
 require 'i18n'
 
 module NameMatcher
