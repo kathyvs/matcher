@@ -67,9 +67,8 @@ class Parser
       match_data = PATTERN.match(date_str)
       return nil unless match_data
       _, year, month, kingdom_code = match_data.to_a
-      date = Date.new(year = year.to_i, month=month.to_i)
-      kingdom = kingdom_map.fetch(kingdom_code)
-      DateSource.new(date=date, kingdom=kingdom)
+      DateSource.new(date=Date.new(year = year.to_i, month=month.to_i),
+        kingdom=kingdom_map.fetch(kingdom_code))
     end
   end
 

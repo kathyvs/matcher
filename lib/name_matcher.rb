@@ -1,26 +1,24 @@
 module NameMatcher
 
+  #
+  # Runs the matching pipeline from an input of lines of string
+  # To an output of formatted lines of string
+  #
   class Runner
 
-    attr_reader :match_pattern, :parser, :extractor, :displayer, :output
+    attr_reader :match_pattern, :parser, :extractor
 
     def initialize(match_pattern, options)
       @match_pattern = match_pattern
-      @parser = options[:parser] || 3
-      @extractor = options[:extractor] || 5
-      @displayer = options[:displayer] || 3
-      @output = options[:output] || 3
+      @parser = options[:parser] || Parser.new
+      @extractor = options[:extractor] || PersonalExtractor.new
     end
 
     def run(reader)
-      lines = reader.read.lazy
+      lines = reader.readlines.lazy
       parsed_items = parser.parse(lines)
-      match_items = map_select(parsed_items, extractor.method(:extract))
-      matched_items = match_items.select {|item| match(item)}
-      matched_items.each do |item|
-        output << displayer.display(item)
-        output << "\n"
-      end
+      match_items = map_select(parsed_items, extractor.method(:extract_item))
+      match_items.select {|item| match(item)}.map(&:display)
     end
 
     private
