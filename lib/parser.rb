@@ -1,5 +1,3 @@
-require 'i18n'
-
 module NameMatcher
 
 #
@@ -36,11 +34,9 @@ class Parser
   end
 
   def parse(lines)
-    return enum_for(:parse, lines) unless block_given?
     lines.map do |line|
-      item = parse_line(line)
-      yield item if item
-    end
+      parse_line(line)
+    end.select {|x| x}
   end
 
   protected

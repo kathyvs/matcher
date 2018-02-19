@@ -34,13 +34,12 @@ describe NameMatcher do
     expect(result).to_not include("2", "4", "-", "10")
   end
 
-  it "works with real pipeline classes" do
-    pending "Adding displayer class"
-    options = {extractor: NameMatcher::PersonalExtractor.new}
+  it "works with default pipeline classes" do
+    #pending "Adding displayer class"
     lines = ["Test Name|201003X|N||", "Another Name|201104N|N||"]
     allow(reader).to receive(:readlines).and_return(lines.to_enum)
-    runner = NameMatcher::Runner.new(/Test/, options)
-    result = runner.run(reader)
+    runner = NameMatcher::Runner.new(/Test/, {})
+    result = runner.run(reader).to_a
     expect(result).to include("Test Name")
     expect(result).to_not include("Another Name")
   end

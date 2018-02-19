@@ -1,3 +1,6 @@
+require 'parser'
+require 'extractor'
+
 module NameMatcher
 
   #
@@ -10,14 +13,14 @@ module NameMatcher
 
     def initialize(match_pattern, options)
       @match_pattern = match_pattern
-      @parser = options[:parser] || Parser.new
-      @extractor = options[:extractor] || PersonalExtractor.new
+      @parser = options[:parser] || NameMatcher::Parser.new
+      @extractor = options[:extractor] || NameMatcher::PersonalExtractor.new
     end
 
     def run(reader)
       lines = reader.readlines.lazy
       parsed_items = parser.parse(lines)
-      match_items = map_select(parsed_items, extractor.method(:extract_item))
+      match_items = map_select(parsed_items, extractor.method(:extract_item)).lazy
       match_items.select {|item| match(item)}.map(&:display)
     end
 
