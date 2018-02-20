@@ -1,4 +1,4 @@
-
+require 'pry'
 require 'rspec'
 require 'extractor'
 require 'parser'
@@ -44,4 +44,33 @@ describe "PersonalExtractor" do
 end
 
 describe "NonPersonalExtractor" do
+end
+
+describe NameMatcher::NameItem do
+
+  context "for personal name entries" do
+
+    let (:name) {
+      "William the Lucky"
+    }
+
+    let (:date_source) {
+      NameMatcher::Parser::DateSource.new(Date.new(2018, 01, 22), "East")
+    }
+
+    def item(name, date_source)
+      NameMatcher::NameItem.new(match_name = 'ignored',
+        date = date_source,
+        name = name,
+        owner = name)
+    end
+
+    it "displays the name" do
+      expect(item(name, date_source).display).to include(name)
+    end
+
+    it "displays the date" do
+      expect(item(name, date_source).display).to include("January 22, 2018")
+    end
+  end
 end

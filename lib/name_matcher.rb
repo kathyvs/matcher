@@ -17,7 +17,7 @@ module NameMatcher
       @extractor = options[:extractor] || NameMatcher::PersonalExtractor.new
     end
 
-    def run(reader)
+    def read(reader)
       lines = reader.readlines.lazy
       parsed_items = parser.parse(lines)
       match_items = map_select(parsed_items, extractor.method(:extract_item)).lazy

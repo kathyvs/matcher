@@ -19,6 +19,11 @@ module NameMatcher
   #
   # Structure for the extracted result
   #
-  NameItem = Struct.new(:match_name, :date_source, :name, :owner)
+  class NameItem < Struct.new(:match_name, :date_source, :name, :owner)
+
+    def display
+      "#{name} (#{date_source.display})"
+    end
+  end
 
 end

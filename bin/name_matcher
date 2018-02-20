@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+#require 'name_options'
+require 'name_matcher'
+
+if __FILE__ == $0
+#  options = NameMatcher::NameOptions.from_args(ARGV)
+  runner = NameMatcher::Runner.new(/Elsbeth/, {})
+  runner.read(STDIN).each do |line|
+    puts line
+  end
+end

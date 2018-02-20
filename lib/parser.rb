@@ -1,3 +1,5 @@
+require 'date'
+
 module NameMatcher
 
 #
@@ -76,7 +78,12 @@ class Parser
   #
   # Date the submission was registered along with the kingdom.
   #
-  DateSource = Struct.new(:date, :kingdom)
+  class DateSource < Struct.new(:date, :kingdom)
+
+    def display
+      date.strftime("%B %-d, %Y")
+    end
+  end
 
 end
 end

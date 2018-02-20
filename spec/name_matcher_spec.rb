@@ -1,6 +1,7 @@
 require 'rspec'
 require 'name_matcher'
 require 'extractor'
+require 'parser'
 
 describe NameMatcher do
 
@@ -18,7 +19,7 @@ describe NameMatcher do
 
   def run_matcher(pat, input)
     allow(reader).to receive(:readlines).and_return(input.to_enum)
-    name_matcher(pat).run(reader)
+    name_matcher(pat).read(reader).to_a
   end
 
   def name_matcher(pat)
@@ -29,19 +30,18 @@ describe NameMatcher do
   it "filters from the reader to output" do
     input = ["1", "x", "2", "11", "4", "51", "-12"]
     pat = /1/
-    result = run_matcher(pat, input).to_a
+    result = run_matcher(pat, input)
     expect(result).to include("|1|", "|11|", "|51|")
     expect(result).to_not include("2", "4", "-", "10")
   end
 
   it "works with default pipeline classes" do
-    #pending "Adding displayer class"
     lines = ["Test Name|201003X|N||", "Another Name|201104N|N||"]
     allow(reader).to receive(:readlines).and_return(lines.to_enum)
     runner = NameMatcher::Runner.new(/Test/, {})
-    result = runner.run(reader).to_a
-    expect(result).to include("Test Name")
-    expect(result).to_not include("Another Name")
+    result = runner.read(reader).to_a
+    expect(result).to include(/Test Name/)
+    expect(result).to_not include(/Another Name/)
   end
 end
 
