@@ -1,6 +1,6 @@
 require 'rspec'
 require 'date'
-require 'parser'
+require 'name_matcher/parser'
 
 describe 'Parser' do
 

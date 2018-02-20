@@ -1,7 +1,7 @@
 require 'rspec'
 require 'name_matcher'
-require 'extractor'
-require 'parser'
+require 'name_matcher/extractor'
+require 'name_matcher/parser'
 
 describe NameMatcher do
 

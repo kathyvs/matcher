@@ -1,5 +1,5 @@
-require 'parser'
-require 'extractor'
+require 'name_matcher/parser'
+require 'name_matcher/extractor'
 
 module NameMatcher
 

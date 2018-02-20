@@ -1,7 +1,6 @@
-require 'pry'
 require 'rspec'
-require 'extractor'
-require 'parser'
+require 'name_matcher/extractor'
+require 'name_matcher/parser'
 
 describe "PersonalExtractor" do
 
