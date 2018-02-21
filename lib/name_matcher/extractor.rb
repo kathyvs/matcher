@@ -1,7 +1,7 @@
 
 require 'i18n'
 
-module NameMatcher
+class NameMatcher
   #
   # Parser for pull out personal names from the armorial
   #

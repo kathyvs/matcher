@@ -24,7 +24,7 @@ describe NameMatcher do
 
   def name_matcher(pat)
     options = {parser: parser, extractor: extractor}
-    NameMatcher::Runner.new(pat, options)
+    NameMatcher.new(pat, options)
   end
 
   it "filters from the reader to output" do
@@ -38,7 +38,7 @@ describe NameMatcher do
   it "works with default pipeline classes" do
     lines = ["Test Name|201003X|N||", "Another Name|201104N|N||"]
     allow(reader).to receive(:readlines).and_return(lines.to_enum)
-    runner = NameMatcher::Runner.new(/Test/, {})
+    runner = NameMatcher.new(/Test/, {})
     result = runner.read(reader).to_a
     expect(result).to include(/Test Name/)
     expect(result).to_not include(/Another Name/)
