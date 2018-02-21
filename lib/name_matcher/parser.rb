@@ -65,8 +65,8 @@ class NameMatcher
         match_data = PATTERN.match(date_str)
         return nil unless match_data
         _, year, month, kingdom_code = match_data.to_a
-        DateSource.new(date=Date.new(year = year.to_i, month=month.to_i),
-          kingdom=kingdom_map.fetch(kingdom_code))
+        DateSource.new(Date.new(year = year.to_i, month=month.to_i),
+          kingdom_map.fetch(kingdom_code))
       end
     end
 
@@ -81,7 +81,7 @@ class NameMatcher
     class DateSource < Struct.new(:date, :kingdom)
 
       def display
-        date.strftime("%B %-d, %Y")
+        "#{kingdom}, #{date.strftime('%B %-d, %Y')}"
       end
     end
 
