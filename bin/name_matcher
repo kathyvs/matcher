@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 
-#require 'name_options'
+require 'name_matcher/options'
 require 'name_matcher'
 
 if __FILE__ == $0
-#  options = NameMatcher::NameOptions.from_args(ARGV)
-  runner = NameMatcher.new(/Maria/, {})
-  runner.read(STDIN).each do |line|
+  options = NameMatcher::Options.parse(ARGV)
+  matcher = options.create_matcher
+  matcher.read(STDIN).each do |line|
     puts line
   end
 end
