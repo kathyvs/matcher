@@ -8,7 +8,7 @@ class NameMatcher
   class Parser
 
     KINGDOM_CODES = {
-      'H' => '\u0036thelmearc',
+      'H' => "\u00C6thelmearc",
       'N' => 'An Tir',
       'X' => 'Ansteorra',
       'R' => 'Artemisia',
