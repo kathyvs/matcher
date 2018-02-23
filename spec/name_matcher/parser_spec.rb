@@ -53,6 +53,10 @@ describe 'Parser' do
       end
     end
 
+    it "translates an unknown letter to itself" do
+      expect(parse_date("201411Z").kingdom).to eq("Z")
+    end
+
   end
 
 end

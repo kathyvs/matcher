@@ -7,13 +7,15 @@ class NameMatcher
   # Parser for pull out personal names from the armorial
   #
   class PersonalExtractor
-    I18n.enforce_available_locales = false
+    FOR_PATTERN = /^for\s(.*)/i
 
     def extract_item(item)
       case item.type
       when 'AN'
-        NameItem.new(item.name, item.date_source, item.text)
-      when 'N'
+        match = FOR_PATTERN.match(item.text)
+        owner = match ? match[1] : item.text
+        NameItem.new(item.name, item.date_source, owner)
+      when /^[BDN]$/
         NameItem.new(item.name, item.date_source, item.name)
       end
     end
@@ -24,6 +26,7 @@ class NameMatcher
   # Structure for the extracted result
   #
   NameItem = Struct.new(:name, :date_source, :owner) do
+    I18n.enforce_available_locales = false
 
     def match_name
       @match_name ||= normalize(name)

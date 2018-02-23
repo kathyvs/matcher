@@ -2,6 +2,9 @@ require 'rspec'
 require 'name_matcher/extractor'
 require 'name_matcher/parser'
 
+#
+# See http://oanda.sca.org/data_format.html for the type codes
+#
 describe "PersonalExtractor" do
 
   let (:extractor) {
@@ -52,11 +55,50 @@ describe "PersonalExtractor" do
 
     before do
       @result = extractor.extract_item(
-        NameMatcher::Parser::ParsedItem.new(alternate_name, date_source, "AN", primary_name))
+        NameMatcher::Parser::ParsedItem.new(alternate_name, date_source, "AN", "For #{primary_name}"))
     end
 
-    it "pulls out the first element (alternate name) as the name element of the item" do
+    it "pulls out the first element as the name element of the item" do
       expect(result.name).to eq(alternate_name)
+    end
+
+    it "pulls out the third element as the owner element of the item minus the 'For ' prefix" do
+      expect(result.owner).to eq(primary_name)
+    end
+
+    it "uses the entire third element if does not start with 'For '" do
+      new_primary_name = "XBad Name"
+      @result = extractor.extract_item(
+        NameMatcher::Parser::ParsedItem.new(alternate_name, date_source, "AN", new_primary_name))
+      expect(result.owner).to eq(new_primary_name)
+    end
+  end
+
+  [['device', 'D'], ['badge', 'B']].each do |description, type|
+    context "for entries of type 'personal name and #{description}' (#{type})" do
+      attr_reader :result
+
+      let(:name) {
+        "Juliana la Roja"
+      }
+
+      let (:armory) {
+        "Or, three ravens gules"
+      }
+
+      before do
+        @result = extractor.extract_item(
+          NameMatcher::Parser::ParsedItem.new(name, date_source, type, armory))
+      end
+
+      it "pulls out the first element as name" do
+        expect(result.name).to eq(name)
+      end
+
+      it "pulls out the first element as owner" do
+        expect(result.owner).to eq(name)
+      end
+
     end
 
   end
@@ -64,7 +106,7 @@ describe "PersonalExtractor" do
   context "for other entries" do
 
     it "skips the item" do
-      item = NameMatcher::Parser::ParsedItem.new("Test", date_source, "D", "ignored")
+      item = NameMatcher::Parser::ParsedItem.new("Test", date_source, "d", "ignored")
       expect(extractor.extract_item(item)).to be_nil
     end
   end

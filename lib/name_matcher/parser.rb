@@ -16,11 +16,11 @@ class NameMatcher
       'Q' => 'Atlantia',
       'V' => 'Avacal',
       'C' => 'Caid',
+      'G' => 'Gleann Abhann',
       'K' => 'Calontir',
       'D' => 'Drachenwald',
       'm' => 'Ealdormere',
       'E' => 'East',
-      't' => 'Gleann Abhann',
       'L' => 'Laurel',
       'w' => 'Lochac',
       'S' => 'Meridies',
@@ -66,7 +66,7 @@ class NameMatcher
         return nil unless match_data
         _, year, month, kingdom_code = match_data.to_a
         DateSource.new(Date.new(year = year.to_i, month=month.to_i),
-          kingdom_map.fetch(kingdom_code))
+          kingdom_map.fetch(kingdom_code, kingdom_code))
       end
     end
 
