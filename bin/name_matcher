@@ -6,7 +6,7 @@ require 'name_matcher'
 if __FILE__ == $0
   options = NameMatcher::Options.parse(ARGV)
   matcher = options.create_matcher
-  matcher.read(STDIN).each do |line|
+  matcher.read(options.reader).each do |line|
     puts line
   end
 end
