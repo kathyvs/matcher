@@ -8,8 +8,9 @@ describe "Integration Tests" do
 
   context "for personal names" do
     it "matches 'dottir' exactly 3 times" do
-      options = NameMatcher::Options.parse(["matcher", "dottir", "-f", "data/testoanda.db"])
-      result = options.create_matcher.read(options.input).to_a
+      puts File.expand_path('.')
+      options = NameMatcher::Options.parse(["dottir", "-f", "spec/data/testoanda.db"])
+      result = options.create_matcher.read(options.reader).to_a
       expect(result.length).to eq(3)
     end
   end
