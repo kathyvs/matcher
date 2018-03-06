@@ -1,6 +1,4 @@
-
 require 'name_matcher/error_handler'
-require 'pry'
 
 describe 'ErrorHandler' do
 

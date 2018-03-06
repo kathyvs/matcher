@@ -1,5 +1,4 @@
 require 'name_matcher/options'
-require 'pry'
 
 describe "Options" do
 
@@ -19,26 +18,35 @@ describe "Options" do
     expect(options.reader).to be(STDIN)
   end
 
+  def set_buffer(file_name, contents)
+    buffer = StringIO.new(contents)
+    allow(File).to receive(:open).with(file_name, /r/).and_return(buffer)
+  end
+
   context "for the file flag" do
 
     let (:file_name) {
       "test.db"
     }
+
     ['-f', '--file'].each do |flag|
       it "creates a reader from a file if the #{flag} is set with a value" do
         file_name = "test.db"
         contents = "test-contents";
-        buffer = StringIO.new(contents)
-        allow(File).to receive(:open).with(file_name, "r").and_return(buffer)
+        set_buffer(file_name, contents)
         options = NameMatcher::Options.parse(["A", flag, file_name])
         expect(options.reader).to_not be(STDIN)
         expect(options.reader.read).to eq(contents);
       end
 
-      it "gives an error if #{flag} is set without a value" do
-        expect {
-          NameMatcher::Options.parse(["A", flag])
-        }.to raise_error(OptionParser::MissingArgument)
+      it "uses #{NameMatcher::DEFAULT_FILE} if #{flag} is given without a parameter" do
+        contents = "test-contents-oanda"
+        set_buffer(NameMatcher::DEFAULT_FILE, contents)
+        options = NameMatcher::Options.parse(["A", flag])
+        expect(options.reader.read).to eq(contents);
+        #expect {
+        #  NameMatcher::Options.parse(["A", flag])
+        #}.to raise_error(OptionParser::MissingArgument)
       end
 
       it "gives an error if #{flag} is set to a missing file" do
